@@ -13,7 +13,11 @@ platform :ios do
     build_app(
       scheme: "UsaBem",
       export_method: "app-store",
-      skip_archive: false
+      export_options: {
+        method: "app-store",
+        signingStyle: "manual"
+      },
+      xcargs: "CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY='' CODE_SIGNING_REQUIRED=NO"
     )
 
     upload_to_testflight(
