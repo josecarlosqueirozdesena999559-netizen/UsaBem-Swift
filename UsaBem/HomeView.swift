@@ -1,4 +1,4 @@
-﻿import SwiftUI
+import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var appState: AppState
@@ -168,5 +168,82 @@ struct HomeView: View {
             Spacer()
             Text("Ver todos").font(.system(size: 13, weight: .semibold)).foregroundStyle(Color("BrandGreen"))
         }
+    }
+}
+
+struct ProductCard: View {
+    let product: Product
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            ZStack(alignment: .topTrailing) {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(.systemGray6))
+                    .frame(height: 140)
+                    .overlay(
+                        Image(systemName: "photo")
+                            .font(.system(size: 32))
+                            .foregroundStyle(.tertiary)
+                    )
+                
+                Text(product.tag)
+                    .font(.system(size: 10, weight: .bold))
+                    .padding(.horizontal, 8).padding(.vertical, 4)
+                    .background(.thinMaterial, in: Capsule())
+                    .padding(8)
+            }
+            
+            Text(product.name)
+                .font(.system(size: 13, weight: .semibold))
+                .lineLimit(1)
+                .foregroundStyle(.primary)
+
+            Text(product.price)
+                .font(.system(size: 15, weight: .black, design: .rounded))
+                .foregroundStyle(Color("BrandGreen"))
+
+            HStack(spacing: 3) {
+                Image(systemName: "location.fill").font(.system(size: 9))
+                Text("\(product.location) • \(product.distance)").font(.system(size: 11))
+            }
+            .foregroundStyle(.secondary)
+        }
+    }
+}
+
+struct ProductRowCard: View {
+    let product: Product
+
+    var body: some View {
+        HStack(spacing: 12) {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemGray6))
+                .frame(width: 80, height: 80)
+                .overlay(
+                    Image(systemName: "photo")
+                        .font(.system(size: 24))
+                        .foregroundStyle(.tertiary)
+                )
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(product.name)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.primary)
+
+                Text(product.price)
+                    .font(.system(size: 15, weight: .black, design: .rounded))
+                    .foregroundStyle(Color("BrandGreen"))
+
+                HStack(spacing: 3) {
+                    Image(systemName: "location.fill").font(.system(size: 9))
+                    Text("\(product.location) • \(product.distance)").font(.system(size: 11))
+                }
+                .foregroundStyle(.secondary)
+            }
+            Spacer()
+        }
+        .padding(10)
+        .background(Color(.secondarySystemGroupedBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 14))
     }
 }
