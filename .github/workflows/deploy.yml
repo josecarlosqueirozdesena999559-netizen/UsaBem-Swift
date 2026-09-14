@@ -30,7 +30,6 @@ jobs:
           BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
-          # Create temporary keychain
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           db_password=$KEYCHAIN_PASSWORD
 
@@ -38,17 +37,24 @@ jobs:
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$db_password" $KEYCHAIN_PATH
 
-          # Import certificate
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          # Import certificate (supports both .cer and .p12)
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.file
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
-          security import $CERTIFICATE_PATH -k $KEYCHAIN_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$db_password" $KEYCHAIN_PATH
+          
+          if file "$CERTIFICATE_PATH" | grep -q "PKCS"; then
+            security import $CERTIFICATE_PATH -k $KEYCHAIN_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12
+          else
+            security import $CERTIFICATE_PATH -k $KEYCHAIN_PATH -A -t cert
+          fi
+          
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$db_password" $KEYCHAIN_PATH || true
 
           # Install provisioning profile
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/
+          echo "Provisioning Profile installed successfully!"
 
       - name: 🚀 Run Fastlane Build & Deploy
         env:
