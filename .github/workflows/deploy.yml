@@ -63,4 +63,5 @@ jobs:
           APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
         run: |
           cd fastlane
+          bundle install
           bundle exec fastlane release_to_testflight
