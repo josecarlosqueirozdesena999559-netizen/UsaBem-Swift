@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Location permissions -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>O UsaBem usa sua localização para mostrar anúncios perto de você e calcular distâncias.</string>
+
+    <!-- Camera permission -->
+    <key>NSCameraUsageDescription</key>
+    <string>Tire fotos do item que deseja vender diretamente pelo app.</string>
+
+    <!-- Photo library permission -->
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Escolha fotos da sua galeria para adicionar ao anúncio.</string>
+
+    <!-- Photo library add-only permission -->
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Salve imagens dos produtos na sua galeria de fotos.</string>
+</dict>
+</plist>
