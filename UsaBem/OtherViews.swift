@@ -1,4 +1,4 @@
-﻿import SwiftUI
+import SwiftUI
 
 // MARK: - Location Permission Sheet
 struct LocationPermissionSheet: View {
@@ -385,7 +385,7 @@ struct ProductDetailView: View {
             .font(.system(size: 11, weight: .semibold))
             .padding(.horizontal, 10).padding(.vertical, 5)
             .background(color.opacity(0.12))
-            .foregroundStyle(color.mix(with: .black, by: 0.2))
+            .foregroundStyle(color)
             .clipShape(Capsule())
     }
 }
