@@ -13,12 +13,12 @@ platform :ios do
     build_app(
       scheme: "UsaBem",
       export_method: "app-store",
-      skip_profile_detection: true,
       export_options: {
         method: "app-store",
-        signingStyle: "manual"
+        signingStyle: "automatic",
+        teamID: "3YB4FZDQ82"
       },
-      xcargs: "CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
+      xcargs: "DEVELOPMENT_TEAM=3YB4FZDQ82 CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO"
     )
 
     upload_to_testflight(

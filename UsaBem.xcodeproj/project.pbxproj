@@ -219,6 +219,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				SDKROOT = iphoneos;
+\t\t\t\tDEVELOPMENT_TEAM = 3YB4FZDQ82;
 			};
 			name = Debug;
 		};
@@ -226,6 +227,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				SDKROOT = iphoneos;
+\t\t\t\tDEVELOPMENT_TEAM = 3YB4FZDQ82;
 			};
 			name = Release;
 		};
