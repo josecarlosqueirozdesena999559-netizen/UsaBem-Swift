@@ -41,18 +41,18 @@ jobs:
           security default-keychain -s $KEYCHAIN_PATH
           security list-keychains -s $KEYCHAIN_PATH $(security list-keychains | tr -d '"')
 
-          # Import official PKCS12 certificate bundle using Ruby decode
+          # Import official PKCS12 certificate bundle using Python decode
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          ruby -e 'require "base64"; File.binwrite(ENV["CERTIFICATE_PATH"], Base64.decode64(ENV["BUILD_CERTIFICATE_BASE64"]))'
+          export CERTIFICATE_PATH
+          python3 -c "import base64, os; open(os.environ['CERTIFICATE_PATH'], 'wb').write(base64.b64decode(os.environ['BUILD_CERTIFICATE_BASE64']))"
           security import $CERTIFICATE_PATH -k $KEYCHAIN_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12
           
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$db_password" $KEYCHAIN_PATH || true
 
-          # Install provisioning profile with exact UUID using Ruby decode
+          # Install provisioning profile with exact UUID using Python decode
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           PP_UUID="ada46669-fe34-4931-8c4b-bc70f142d530"
-          PP_TARGET=~/Library/MobileDevice/Provisioning\ Profiles/$PP_UUID.mobileprovision
-          ruby -e 'require "base64"; File.binwrite(File.expand_path("~/Library/MobileDevice/Provisioning Profiles/ada46669-fe34-4931-8c4b-bc70f142d530.mobileprovision"), Base64.decode64(ENV["BUILD_PROVISION_PROFILE_BASE64"]))'
+          python3 -c "import base64, os; open(os.path.expanduser('~/Library/MobileDevice/Provisioning Profiles/ada46669-fe34-4931-8c4b-bc70f142d530.mobileprovision'), 'wb').write(base64.b64decode(os.environ['BUILD_PROVISION_PROFILE_BASE64']))"
           echo "Provisioning Profile $PP_UUID installed successfully!"
 
       - name: 🚀 Run Fastlane Build & Deploy
@@ -62,7 +62,7 @@ jobs:
           ASC_PRIVATE_KEY_BASE64: ${{ secrets.ASC_PRIVATE_KEY }}
         run: |
           mkdir -p ~/.appstoreconnect/private_keys
-          ruby -e 'require "base64"; File.write(File.expand_path("~/.appstoreconnect/private_keys/AuthKey_#{ENV["APP_STORE_CONNECT_API_KEY_KEY_ID"]}.p8"), Base64.decode64(ENV["ASC_PRIVATE_KEY_BASE64"]))'
+          python3 -c "import base64, os; open(os.path.expanduser('~/.appstoreconnect/private_keys/AuthKey_' + os.environ['APP_STORE_CONNECT_API_KEY_KEY_ID'] + '.p8'), 'wb').write(base64.b64decode(os.environ['ASC_PRIVATE_KEY_BASE64']))"
           
           cd fastlane
           bundle install
