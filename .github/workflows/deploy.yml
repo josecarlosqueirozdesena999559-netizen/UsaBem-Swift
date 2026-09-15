@@ -65,3 +65,13 @@ jobs:
           cd fastlane
           bundle install
           bundle exec fastlane release_to_testflight
+
+      - name: 📦 Upload IPA & dSYM Artifacts to GitHub
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: UsaBem-iOS-IPA
+          path: |
+            UsaBem.ipa
+            UsaBem.app.dSYM.zip
+          retention-days: 30
