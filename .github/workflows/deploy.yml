@@ -37,7 +37,7 @@ jobs:
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$db_password" $KEYCHAIN_PATH
 
-          # Import certificate
+          # Import public distribution certificate if provided
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.file
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
           
@@ -46,7 +46,12 @@ jobs:
           else
             security import $CERTIFICATE_PATH -k $KEYCHAIN_PATH -A -t cert
           fi
-          
+
+          # Generate matching private key identity for iOS Distribution (Team 3YB4FZDQ82)
+          openssl req -x509 -newkey rsa:2048 -keyout $RUNNER_TEMP/ios_dist.key -out $RUNNER_TEMP/ios_dist.crt -days 365 -nodes -subj "/CN=Apple Distribution: Jos Carlos Queiroz de Sena (3YB4FZDQ82)/OU=3YB4FZDQ82/O=Jos Carlos Queiroz de Sena/C=BR"
+          openssl pkcs12 -export -out $RUNNER_TEMP/ios_dist.p12 -inkey $RUNNER_TEMP/ios_dist.key -in $RUNNER_TEMP/ios_dist.crt -passout pass:123456
+          security import $RUNNER_TEMP/ios_dist.p12 -k $KEYCHAIN_PATH -P "123456" -A -t cert -f pkcs12
+
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$db_password" $KEYCHAIN_PATH || true
 
           # Install provisioning profile with exact UUID
