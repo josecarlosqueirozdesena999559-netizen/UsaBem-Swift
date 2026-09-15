@@ -61,9 +61,6 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
           ASC_PRIVATE_KEY_BASE64: ${{ secrets.ASC_PRIVATE_KEY }}
         run: |
-          mkdir -p ~/.appstoreconnect/private_keys
-          python3 -c "import base64, os; open(os.path.expanduser('~/.appstoreconnect/private_keys/AuthKey_' + os.environ['APP_STORE_CONNECT_API_KEY_KEY_ID'] + '.p8'), 'wb').write(base64.b64decode(os.environ['ASC_PRIVATE_KEY_BASE64']))"
-          
           cd fastlane
           bundle install
           bundle exec fastlane release_to_testflight
