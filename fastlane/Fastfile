@@ -58,7 +58,7 @@ platform :ios do
       puts "Spaceship test connection error: #{e.class} - #{e.message}"
     end
 
-    puts "Uploading UsaBem.ipa directly to App Store Connect via xcrun altool..."
-    sh("xcrun altool --upload-app -f ../UsaBem.ipa --type ios --apiKey #{key_id} --apiIssuer #{issuer_id}")
+    puts "Uploading UsaBem.ipa directly to App Store Connect via iTMSTransporter..."
+    sh("iTMSTransporter -m upload -asset_path ../UsaBem.ipa -api_key #{key_id} -api_issuer #{issuer_id}")
   end
 end
