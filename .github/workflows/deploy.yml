@@ -58,8 +58,13 @@ jobs:
         env:
           APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-          APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+          ASC_PRIVATE_KEY_BASE64: ${{ secrets.ASC_PRIVATE_KEY }}
         run: |
+          mkdir -p ~/.appstoreconnect/private_keys
+          KEY_ID="${APP_STORE_CONNECT_API_KEY_KEY_ID}"
+          echo -n "${ASC_PRIVATE_KEY_BASE64}" | base64 --decode > ~/.appstoreconnect/private_keys/AuthKey_${KEY_ID}.p8
+          echo -n "${ASC_PRIVATE_KEY_BASE64}" | base64 --decode > $RUNNER_TEMP/AuthKey_${KEY_ID}.p8
+          
           cd fastlane
           bundle install
           bundle exec fastlane release_to_testflight
