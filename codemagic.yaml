@@ -7,12 +7,9 @@ workflows:
       app_store_connect: Codemagic Apple
     environment:
       xcode: latest
-      vars:
-        APP_STORE_CONNECT_KEY_IDENTIFIER: "8BZ8D9ZW4Y"
-        APP_STORE_CONNECT_ISSUER_ID: "0d5ac330-455b-4c55-a097-b9ae4018e74b"
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.usabem.app
+        bundle_identifier: app.requisiplus.clientios
     scripts:
       - name: Initialize project structure
         script: |
