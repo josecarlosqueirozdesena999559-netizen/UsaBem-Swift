@@ -3,8 +3,6 @@ workflows:
     name: UsaBem iOS TestFlight
     max_build_duration: 60
     instance_type: mac_mini_m1
-    integrations:
-      app_store_connect: Codemagic Apple
     environment:
       xcode: latest
     scripts:
@@ -22,7 +20,23 @@ workflows:
           xcodebuild -exportArchive \
                      -archivePath $CM_BUILD_DIR/build/UsaBem.xcarchive \
                      -exportOptionsPlist export_options.plist \
-                     -exportPath $CM_BUILD_DIR/build || true
+                     -exportPath $CM_BUILD_DIR/build
+      - name: Publish to TestFlight
+        script: |
+          echo "Uploading UsaBem.ipa to App Store Connect / TestFlight..."
+          mkdir -p ~/.appstoreconnect/private_keys
+          echo "-----BEGIN PRIVATE KEY-----
+          MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgRnFWUa5sJSxgBL0g
+          cmEowFQBfyYcSt2W19KMtrG/+hegCgYIKoZIzj0DAQehRANCAAQLM86QW5+2eTR5
+          riAD9Kj004seNanjNBF6ds26KAo860BGKR+WWOXwgSJzy/b/4YL5KWQQSGyhK2qP
+          IZ8Y2+eU
+          -----END PRIVATE KEY-----" > ~/.appstoreconnect/private_keys/AuthKey_8BZ8D9ZW4Y.p8
+
+          app-store-connect publish \
+            --issuer-id "0d5ac330-455b-4c55-a097-b9ae4018e74b" \
+            --key-id "8BZ8D9ZW4Y" \
+            --private-key "$(< ~/.appstoreconnect/private_keys/AuthKey_8BZ8D9ZW4Y.p8)" \
+            --ipa "$CM_BUILD_DIR/build/UsaBem.ipa" || true
     artifacts:
       - $CM_BUILD_DIR/build/*.ipa
       - $CM_BUILD_DIR/build/*.xcarchive
@@ -30,6 +44,3 @@ workflows:
       email:
         recipients:
           - dimsena910@gmail.com
-      app_store_connect:
-        auth: integration
-        submit_to_testflight: true
