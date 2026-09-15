@@ -18,10 +18,10 @@ platform :ios do
         signingStyle: "manual",
         teamID: "3YB4FZDQ82",
         provisioningProfiles: {
-          "com.usabem.app" => "ada46669-fe34-4931-8c4b-bc70f142d530"
+          "app.requisiplus.clientios" => "ada46669-fe34-4931-8c4b-bc70f142d530"
         }
       },
-      xcargs: "DEVELOPMENT_TEAM=3YB4FZDQ82 CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER=ada46669-fe34-4931-8c4b-bc70f142d530"
+      xcargs: "DEVELOPMENT_TEAM=3YB4FZDQ82 CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER=ada46669-fe34-4931-8c4b-bc70f142d530 PRODUCT_BUNDLE_IDENTIFIER=app.requisiplus.clientios"
     )
 
     upload_to_testflight(
