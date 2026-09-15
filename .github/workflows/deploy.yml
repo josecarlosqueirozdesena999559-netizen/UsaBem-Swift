@@ -37,7 +37,7 @@ jobs:
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$db_password" $KEYCHAIN_PATH
 
-          # Set default keychain and list-keychains so xcodebuild can discover imported certificates
+          # Set default keychain and search list for xcodebuild
           security default-keychain -s $KEYCHAIN_PATH
           security list-keychains -s $KEYCHAIN_PATH $(security list-keychains | tr -d '"')
 
@@ -50,7 +50,7 @@ jobs:
 
           # Install provisioning profile with exact UUID
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          PP_UUID="f5afae80-383a-40f7-aa87-9052c82e51a3"
+          PP_UUID="ada46669-fe34-4931-8c4b-bc70f142d530"
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o ~/Library/MobileDevice/Provisioning\ Profiles/$PP_UUID.mobileprovision
           echo "Provisioning Profile $PP_UUID installed successfully!"
 
