@@ -7,7 +7,8 @@ platform :ios do
       key_id: ENV["APP_STORE_CONNECT_API_KEY_KEY_ID"],
       issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
       key_content: ENV["APP_STORE_CONNECT_API_KEY_KEY"],
-      is_key_content_base64: false
+      is_key_content_base64: false,
+      in_house: false
     )
 
     build_app(
@@ -26,7 +27,9 @@ platform :ios do
 
     upload_to_testflight(
       api_key: api_key,
-      skip_waiting_for_build_processing: true
+      app_identifier: "app.requisiplus.clientios",
+      skip_waiting_for_build_processing: true,
+      skip_submission: true
     )
   end
 end
