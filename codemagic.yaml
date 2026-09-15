@@ -3,20 +3,25 @@ workflows:
     name: UsaBem iOS TestFlight
     max_build_duration: 60
     instance_type: mac_mini_m1
+    integrations:
+      app_store_connect: Codemagic Apple
     environment:
       xcode: latest
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: app.requisiplus.clientios
     scripts:
       - name: Initialize project structure
         script: |
           echo "Building UsaBem native Swift app for iOS..."
-      - name: Build Xcode Archive & IPA
+      - name: Build Xcode Archive
         script: |
           xcodebuild -project UsaBem.xcodeproj \
                      -scheme UsaBem \
                      -sdk iphoneos \
                      -configuration Release \
                      -archivePath $CM_BUILD_DIR/build/UsaBem.xcarchive \
-                     archive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+                     archive
     artifacts:
       - $CM_BUILD_DIR/build/*.ipa
       - $CM_BUILD_DIR/build/*.xcarchive
@@ -24,3 +29,6 @@ workflows:
       email:
         recipients:
           - dimsena910@gmail.com
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
