@@ -13,15 +13,12 @@ platform :ios do
     build_app(
       scheme: "UsaBem",
       export_method: "app-store",
+      skip_profile_detection: true,
       export_options: {
         method: "app-store",
-        signingStyle: "manual",
-        teamID: "3YB4FZDQ82",
-        provisioningProfiles: {
-          "com.usabem.app" => "f5afae80-383a-40f7-aa87-9052c82e51a3"
-        }
+        signingStyle: "manual"
       },
-      xcargs: "DEVELOPMENT_TEAM=3YB4FZDQ82 CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY='Apple Distribution' PROVISIONING_PROFILE_SPECIFIER=f5afae80-383a-40f7-aa87-9052c82e51a3"
+      xcargs: "CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=''"
     )
 
     upload_to_testflight(
