@@ -37,7 +37,7 @@ jobs:
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$db_password" $KEYCHAIN_PATH
 
-          # Import certificate (supports both .cer and .p12)
+          # Import certificate
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.file
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
           
@@ -49,12 +49,11 @@ jobs:
           
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$db_password" $KEYCHAIN_PATH || true
 
-          # Install provisioning profile
-          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+          # Install provisioning profile with exact UUID
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/
-          echo "Provisioning Profile installed successfully!"
+          PP_UUID="f5afae80-383a-40f7-aa87-9052c82e51a3"
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o ~/Library/MobileDevice/Provisioning\ Profiles/$PP_UUID.mobileprovision
+          echo "Provisioning Profile $PP_UUID installed successfully!"
 
       - name: 🚀 Run Fastlane Build & Deploy
         env:

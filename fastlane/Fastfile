@@ -16,9 +16,12 @@ platform :ios do
       export_options: {
         method: "app-store",
         signingStyle: "manual",
-        teamID: "3YB4FZDQ82"
+        teamID: "3YB4FZDQ82",
+        provisioningProfiles: {
+          "com.usabem.app" => "f5afae80-383a-40f7-aa87-9052c82e51a3"
+        }
       },
-      xcargs: "DEVELOPMENT_TEAM=3YB4FZDQ82 CODE_SIGN_STYLE=Manual"
+      xcargs: "DEVELOPMENT_TEAM=3YB4FZDQ82 CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER=f5afae80-383a-40f7-aa87-9052c82e51a3"
     )
 
     upload_to_testflight(
