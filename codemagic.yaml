@@ -7,14 +7,17 @@ workflows:
       app_store_connect: Codemagic Apple
     environment:
       xcode: latest
+      vars:
+        APP_STORE_CONNECT_KEY_IDENTIFIER: "8BZ8D9ZW4Y"
+        APP_STORE_CONNECT_ISSUER_ID: "0d5ac330-455b-4c55-a097-b9ae4018e74b"
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: app.requisiplus.clientios
+        bundle_identifier: com.usabem.app
     scripts:
       - name: Initialize project structure
         script: |
           echo "Building UsaBem native Swift app for iOS..."
-      - name: Build Xcode Archive
+      - name: Build Xcode Archive & IPA
         script: |
           xcodebuild -project UsaBem.xcodeproj \
                      -scheme UsaBem \
@@ -22,6 +25,10 @@ workflows:
                      -configuration Release \
                      -archivePath $CM_BUILD_DIR/build/UsaBem.xcarchive \
                      archive
+          xcodebuild -exportArchive \
+                     -archivePath $CM_BUILD_DIR/build/UsaBem.xcarchive \
+                     -exportOptionsPlist export_options.plist \
+                     -exportPath $CM_BUILD_DIR/build
     artifacts:
       - $CM_BUILD_DIR/build/*.ipa
       - $CM_BUILD_DIR/build/*.xcarchive
