@@ -42,6 +42,21 @@ platform :ios do
       xcargs: "DEVELOPMENT_TEAM=3YB4FZDQ82 CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER=ada46669-fe34-4931-8c4b-bc70f142d530 PRODUCT_BUNDLE_IDENTIFIER=app.requisiplus.clientios"
     )
 
+    begin
+      puts "Testing App Store Connect API connection with Spaceship..."
+      token = Spaceship::ConnectAPI::Token.create(
+        key_id: key_id,
+        issuer_id: issuer_id,
+        filepath: File.join(p8_dir, "AuthKey_#{key_id}.p8")
+      )
+      Spaceship::ConnectAPI.token = token
+      apps = Spaceship::ConnectAPI::App.all
+      puts "Successfully connected to App Store Connect API! Found #{apps.count} apps."
+      apps.each { |a| puts "App: #{a.name} (#{a.bundle_id})" }
+    rescue => e
+      puts "Spaceship test connection error: #{e.class} - #{e.message}"
+    end
+
     upload_to_testflight(
       api_key: api_key,
       app_identifier: "app.requisiplus.clientios",
