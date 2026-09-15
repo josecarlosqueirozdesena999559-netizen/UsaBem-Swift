@@ -58,13 +58,7 @@ platform :ios do
       puts "Spaceship test connection error: #{e.class} - #{e.message}"
     end
 
-    upload_to_testflight(
-      api_key: api_key,
-      apple_id: "6612767809",
-      team_id: "3YB4FZDQ82",
-      app_identifier: "app.requisiplus.clientios",
-      skip_waiting_for_build_processing: true,
-      skip_submission: true
-    )
+    puts "Uploading UsaBem.ipa directly to App Store Connect via xcrun altool..."
+    sh("xcrun altool --upload-app -f ../UsaBem.ipa --type ios --apiKey #{key_id} --apiIssuer #{issuer_id}")
   end
 end
