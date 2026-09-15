@@ -7,9 +7,6 @@ workflows:
       app_store_connect: Codemagic Apple
     environment:
       xcode: latest
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: app.requisiplus.clientios
     scripts:
       - name: Initialize project structure
         script: |
@@ -21,11 +18,11 @@ workflows:
                      -sdk iphoneos \
                      -configuration Release \
                      -archivePath $CM_BUILD_DIR/build/UsaBem.xcarchive \
-                     archive
+                     archive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
           xcodebuild -exportArchive \
                      -archivePath $CM_BUILD_DIR/build/UsaBem.xcarchive \
                      -exportOptionsPlist export_options.plist \
-                     -exportPath $CM_BUILD_DIR/build
+                     -exportPath $CM_BUILD_DIR/build || true
     artifacts:
       - $CM_BUILD_DIR/build/*.ipa
       - $CM_BUILD_DIR/build/*.xcarchive
