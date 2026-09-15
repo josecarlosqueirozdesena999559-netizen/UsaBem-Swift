@@ -15,9 +15,10 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         method: "app-store",
-        signingStyle: "manual"
+        signingStyle: "manual",
+        teamID: "3YB4FZDQ82"
       },
-      xcargs: "CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY='' CODE_SIGNING_REQUIRED=NO"
+      xcargs: "DEVELOPMENT_TEAM=3YB4FZDQ82 CODE_SIGN_STYLE=Manual"
     )
 
     upload_to_testflight(
