@@ -37,10 +37,14 @@ jobs:
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$db_password" $KEYCHAIN_PATH
 
-          # Import official PKCS12 certificate
+          # Set default keychain and list-keychains so xcodebuild can discover imported certificates
+          security default-keychain -s $KEYCHAIN_PATH
+          security list-keychains -s $KEYCHAIN_PATH $(security list-keychains | tr -d '"')
+
+          # Import official PKCS12 certificate bundle
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
-          security import $CERTIFICATE_PATH -k $KEYCHAIN_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security import $CERTIFICATE_PATH -k $KEYCHAIN_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12
           
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$db_password" $KEYCHAIN_PATH || true
 
